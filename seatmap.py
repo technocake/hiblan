@@ -6,6 +6,7 @@ import curses.panel
 import locale
 locale.setlocale(locale.LC_ALL, '')
 code = locale.getpreferredencoding()
+import time
 
 
 LOGO = """
@@ -19,19 +20,31 @@ LOGO = """
  88       88 88 8Y"Ybbd8"'  88 `"8bbdP"Y8 88       88 
 """
 
+def make_panel(h,l, y,x, str): 
+	win = curses.newwin(h,l, y,x) 
+	win.erase() 
+	win.box() 
+	win.addstr(2, 2, str) 
+	panel = curses.panel.new_panel(win) 
+	return win, panel 
 
 def seatmap(win):
-
 	
 	win.addstr(0,0, str(win.getmaxyx()))
-	logoWin = curses.newwin(0,0)
-	logoWin.addstr(20,20, LOGO)
 	win.border(0)
 	win.refresh()
-	logoWin.refresh()	
+
+	(logowin, logopan) = make_panel(20, 150, 30, 20, LOGO)
 	
+	curses.panel.update_panels()
+	logopan.top()
+	logowin.refresh()	
+
+
 	while 1:
-		CMD = win.getch()
+		time.sleep(10)
+		#CMD = win.getch()
+		
 	#raise Exception
 
 

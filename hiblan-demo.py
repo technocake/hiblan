@@ -14,6 +14,8 @@ LOGO = """
  88       88 88 8Y"Ybbd8"'  88 `"8bbdP"Y8 88       88 
 """
 
+PADDING = 1
+
 def make_panel(h,l, y,x, str): 
 	curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK)
 
@@ -31,13 +33,16 @@ def seatmap(win):
 
 	win.refresh()
 
-	logolen = len(LOGO.split('\n')[1])+1 #Width of the logo
-
-	(logowin, logopan) = make_panel(20, logolen, MY/2-20/2, MX/2-100/2, LOGO)
+	logoheight, logolen = len(LOGO.split('\n'))+2 ,len(LOGO.split('\n')[1])+1 #Width of the logo
+	
+	(logowin, logopan) = make_panel(logoheight, logolen, MY/2-20/2, MX/2-logolen/2, LOGO)
 	
 	curses.panel.update_panels()
 	logopan.top()
 	logowin.refresh()	
+
+	if curses.can_change_color():
+		curses.init_color(COLOR_RED, 0, 300, 200)
 
 	
 
@@ -46,8 +51,10 @@ def seatmap(win):
 		time.sleep(1) 
 		(PY,PX) = logowin.getmaxyx()
 		(MY, MX) = win.getmaxyx()
+
 		win.addstr(0, MX/2, str(logowin.getmaxyx()) )
-		Y,X = random.randrange(0, MY-PY), random.randrange(0, MX+1-PX) 
+		
+		Y,X = random.randrange(PADDING, MY-PY-PADDING), random.randrange(PADDING, MX+1-PX-PADDING) 
  		logopan.move(Y,X)
  		curses.init_pair(1,random.randrange(0, 8), 0 )
  		logowin.addstr(2, 2, LOGO, curses.color_pair(1))

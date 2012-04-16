@@ -78,12 +78,18 @@ def rendergras(win, Y, X, H, W):
 
 
 def renderNyan(nyanwin, X, Y, TICK):
+	
 	nyanwin.addstr(0,0, NYANCAT[TICK%2])
+	
 	tails = NYANCAT[2+TICK%2].split('\n')
 	for i in range(len(tails)):
 		nyanwin.addstr(5,5, str(i))
-		curses.init_pair(3, 2+i, curses.COLOR_BLACK)
-		nyanwin.addstr(5+i,0, tails[i], curses.color_pair(3))
+		curses.init_pair(3, curses.COLOR_RED, curses.COLOR_BLACK)
+		curses.init_pair(4, curses.COLOR_BLUE, curses.COLOR_BLACK)
+		curses.init_pair(5, curses.COLOR_GREEN, curses.COLOR_BLACK)
+		curses.init_pair(6, curses.COLOR_RED, curses.COLOR_BLACK)
+		curses.init_pair(7, curses.COLOR_YELLOW, curses.COLOR_BLACK)
+		nyanwin.addstr(5+i,0, tails[i], curses.color_pair(3+i))
 
 	nyanwin.refresh()
 
